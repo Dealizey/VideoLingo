@@ -127,6 +127,39 @@ VideoLingo supports OpenAI-Like API format and various TTS interfaces:
 
 > **Note:** VideoLingo works with **[302.ai](https://gpt302.saaslink.net/C2oHR9)** - one API key for all services (LLM, WhisperX, TTS). Or run locally with Ollama and Edge-TTS for free, no API needed!
 
+### Using Google Colab for Transcription (WhisperX)
+
+For users who might have resource constraints for running WhisperX locally or prefer a cloud-based GPU environment, VideoLingo offers a mode to perform the transcription step using Google Colab.
+
+**Workflow:**
+
+1.  **Select Runtime:** In the Streamlit UI sidebar, under "Subtitles Settings", choose "colab" as the "WhisperX Runtime".
+2.  **Audio Preparation:** The application will save the audio file (typically from the `output/audio/` directory, like `_vocals.mp3`) to the local path specified by `whisper.colab_audio_path` in your `config.yaml` (default: `output/colab_audio/`).
+3.  **Notebook Generation:** A Jupyter Notebook named `whisperx_transcribe_colab.ipynb` will be automatically generated in your project's root directory (or the path configured by `whisper.colab_audio_path`).
+4.  **Upload to Colab:**
+    *   Open Google Colab (colab.research.google.com).
+    *   Upload the generated `whisperx_transcribe_colab.ipynb` notebook.
+    *   Upload the audio file (e.g., `audio_for_colab.mp3`) from your local `colab_audio_path` to your Colab environment when prompted by the notebook.
+5.  **Run Notebook:** Execute the cells in the Colab notebook. It will:
+    *   Clone the VideoLingo repository.
+    *   Install all necessary dependencies.
+    *   Perform the WhisperX transcription using the audio file you uploaded.
+    *   Generate a `transcription_result.json` file and make it available for download.
+6.  **Download Results:** Download the `transcription_result.json` file from Colab.
+7.  **Place Results Locally:** Move the downloaded `transcription_result.json` file into the local directory specified by `whisper.colab_result_path` in your `config.yaml` (default: `output/colab_results/`).
+8.  **Resume Application:** Press Enter in the VideoLingo application console when prompted. The application will then use the transcription results from Colab to continue processing.
+
+**Configuration:**
+
+You can customize the local paths for audio and results in your `config.yaml` file:
+
+```yaml
+whisper:
+  # ... other whisper settings
+  colab_audio_path: 'output/colab_audio/'
+  colab_result_path: 'output/colab_results/'
+```
+
 For detailed installation, API configuration, and batch mode instructions, please refer to the documentation: [English](/docs/pages/docs/start.en-US.md) | [中文](/docs/pages/docs/start.zh-CN.md)
 
 ## Current Limitations

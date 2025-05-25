@@ -59,14 +59,25 @@ def page_setting():
                 update_key("whisper.language", langs[lang])
                 st.rerun()
 
-        runtime = st.selectbox(t("WhisperX Runtime"), options=["local", "cloud", "elevenlabs"], index=["local", "cloud", "elevenlabs"].index(load_key("whisper.runtime")), help=t("Local runtime requires >8GB GPU, cloud runtime requires 302ai API key, elevenlabs runtime requires ElevenLabs API key"))
+        runtime_options = ["local", "cloud", "elevenlabs", "colab"]
+        current_runtime = load_key("whisper.runtime")
+        if current_runtime not in runtime_options:
+            current_runtime = "local" # Default to local if saved runtime is invalid
+
+        runtime = st.selectbox(
+            t("WhisperX Runtime"), 
+            options=runtime_options, 
+            index=runtime_options.index(current_runtime), 
+            help=t("Local runtime requires >8GB GPU, cloud runtime requires 302ai API key, elevenlabs runtime requires ElevenLabs API key, Colab runtime uses a generated Jupyter notebook for transcription on Google Colab.")
+        )
         if runtime != load_key("whisper.runtime"):
             update_key("whisper.runtime", runtime)
             st.rerun()
         if runtime == "cloud":
             config_input(t("WhisperX 302ai API"), "whisper.whisperX_302_api_key")
         if runtime == "elevenlabs":
-            config_input(("ElevenLabs API"), "whisper.elevenlabs_api_key")
+            config_input(t("ElevenLabs API"), "whisper.elevenlabs_api_key")
+        # No specific API key input is needed for "colab" runtime in this sidebar directly.
 
         with c2:
             target_language = st.text_input(t("Target Lang"), value=load_key("target_language"), help=t("Input any language in natural language, as long as llm can understand"))
