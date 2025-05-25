@@ -10,11 +10,11 @@ def transcribe_audio_colab(raw_audio_file, vocal_audio_file, start, end):
     by generating a Jupyter notebook and guiding the user through the process.
     """
     # 1. Get paths and settings from config
-    colab_audio_path = load_key("whisper.colab_audio_path", "output/colab_audio/")
-    colab_result_path = load_key("whisper.colab_result_path", "output/colab_results/")
-    model_name = load_key("whisper.model", "large-v3")
-    language_code = load_key("whisper.language", "en") # Use 'None' for auto-detect if appropriate for whisperx
-    model_dir_config = load_key("model_dir", "_model_cache") # Local model dir, used for context
+    colab_audio_path = load_key("whisper.colab_audio_path")
+    colab_result_path = load_key("whisper.colab_result_path")
+    model_name = load_key("whisper.model")
+    language_code = load_key("whisper.language") # Use 'None' for auto-detect if appropriate for whisperx
+    model_dir_config = load_key("model_dir") # Local model dir, used for context
 
     # Ensure language_code is None if empty or 'auto', as whisperx might expect None for auto-detection
     if language_code and language_code.lower() in ["auto", "none", ""]:
