@@ -82,21 +82,12 @@ def transcribe_audio_colab(raw_audio_file, vocal_audio_file, start, end):
                     "!apt-get update && apt-get install -y ffmpeg\n",
                     "\n",
                     "!echo \"Installing PyTorch (for CUDA 11.8)...\"\n",
+                    # Explicitly install PyTorch first to ensure correct version for Colab GPU environment
                     "!pip install torch==2.0.0 torchaudio==2.0.0 --index-url https://download.pytorch.org/whl/cu118 -q\n",
                     "\n",
-                    "!echo \"Installing whisperx and its dependencies...\"\n",
-                    # This specific commit of whisperx will pull its tested versions of faster-whisper, ctranslate2, transformers, etc.
-                    "!pip install git+https://github.com/m-bain/whisperx.git@7307306a9d8dd0d261e588cc933322454f853853 -q\n",
-                    "\n",
-                    "!echo \"Installing other potentially required libraries...\"\n",
-                    # Add other direct dependencies from requirements.txt that whisperx or its components might need,
-                    # or that are good for a robust audio processing environment.
-                    # ctranslate2 is pulled by faster-whisper (a whisperx dep). transformers is pulled by whisperx.
-                    # pandas, nltk are pulled by whisperx.
-                    # pyannote.audio is pulled by whisperx.
-                    "!pip install librosa==0.10.2.post1 numpy==1.26.4 rich PyYAML==6.0.2 requests==2.32.3 -q\n",
-                    # Removed: pandas, as whisperx should install its preferred version.
-                    # Added PyYAML and requests as they are small, often used, and listed in VideoLingo's install.py first steps.
+                    "!echo \"Installing VideoLingo and its dependencies from setup.py (requirements.txt)...\"\n",
+                    # This will install the project and its dependencies listed in requirements.txt via setup.py
+                    "!pip install . -q\n", 
                     "\n",
                     "!echo \"Dependency installation complete.\""
                 ]
